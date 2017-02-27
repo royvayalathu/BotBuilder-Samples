@@ -18,9 +18,8 @@ var connector = new builder.ChatConnector({
 server.post('/api/messages', connector.listen());
 
 var DialogLabels = {
-    Hotels: 'Hotels',
-    Flights: 'Flights',
-    Support: 'Support'
+    Yes: 'Yes',
+    No: 'No',
 };
 
 var bot = new builder.UniversalBot(connector, [
@@ -28,8 +27,8 @@ var bot = new builder.UniversalBot(connector, [
         // prompt for search option
         builder.Prompts.choice(
             session,
-            'Are you looking for a flight or a hotel?',
-            [DialogLabels.Flights, DialogLabels.Hotels],
+            'The Water detector in your Garage has detected water in Garage. Shall we organize a support service for you?',
+            [DialogLabels.Yes, DialogLabels.No],
             {
                 maxRetries: 3,
                 retryPrompt: 'Not a valid option'
@@ -51,9 +50,9 @@ var bot = new builder.UniversalBot(connector, [
         // continue on proper dialog
         var selection = result.response.entity;
         switch (selection) {
-            case DialogLabels.Flights:
+            case DialogLabels.No:
                 return session.beginDialog('flights');
-            case DialogLabels.Hotels:
+            case DialogLabels.Yes:
                 return session.beginDialog('hotels');
         }
     }
